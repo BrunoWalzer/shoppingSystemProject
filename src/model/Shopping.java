@@ -154,7 +154,7 @@ public class Shopping {
     public boolean procuraLojaPorNome(String nomeLoja) {
         for (int i = 0; i < lojas.length; i++) {
             if (lojas[i] != null && lojas[i].getNome().equalsIgnoreCase(nomeLoja)) {
-                System.out.println("Loja encontrada: " + lojas[i]);
+                System.out.println("Loja encontrada: \n" + lojas[i]);
                 return true;
             }
         }
