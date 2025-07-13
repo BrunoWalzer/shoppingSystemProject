@@ -162,7 +162,7 @@ public class Shopping {
         return false;
     }
 
-    public boolean alteraDados(String nomeLoja) {
+    public boolean alteraNomeDaLoja(String nomeLoja) {
         for (int i = 0; i < lojas.length; i++) {
             if (lojas[i] != null && lojas[i].getNome().equalsIgnoreCase(nomeLoja)) {
                 System.out.println("Loja encontrada: " + lojas[i]);
@@ -171,6 +171,77 @@ public class Shopping {
             }
         }
         System.out.println("Loja não encontrada: " + nomeLoja);
+        return false;
+    }
+
+    public boolean alteraNumeroDeLoja(String nomeLoja) {
+        for(int i = 0; i < lojas.length; i++) {
+            if (nomeLoja != null && nomeLoja.equalsIgnoreCase(lojas[i].getNome())) {
+                System.out.println("Loja encontrada: " + lojas[i]);
+                int novoNumero = Teclado.leInt("Digite o novo número da loja: ");
+                if (verificaNumeroLojaValido(novoNumero)) {
+                    lojas[i].setNumeroDaLoja(novoNumero);
+                    return true;
+                } else {
+                    System.out.println("Número inválido, não foi possível alterar.");
+                }
+
+            }
+        }
+
+        return false;
+    }
+
+    public boolean confereTipoDeLoja(String nomeLoja) {
+        for (int i = 0; i < lojas.length; i++) {
+            if (lojas[i] instanceof Bijuteria && lojas[i].getNome().equalsIgnoreCase(nomeLoja)) {
+                System.out.println("Loja encontrada: " + lojas[i]);
+                int novaMeta = Teclado.leInt("Digite a nova meta de vendas: ");
+                ((Bijuteria)lojas[i]).setMetaVendas(novaMeta);
+                return true;
+            } else if (lojas[i] instanceof Cosmetico && lojas[i].getNome().equalsIgnoreCase(nomeLoja)) {
+                System.out.println("Loja encontrada: " + lojas[i]);
+                int novaTaxaComercializacao = Teclado.leInt("Digite a nova taxa de comercialização: ");
+                ((Cosmetico)lojas[i]).setTaxaComercializacao(novaTaxaComercializacao);
+                return true;
+            } else if (lojas[i] instanceof Informatica && lojas[i].getNome().equalsIgnoreCase(nomeLoja)) {
+                System.out.println("Loja encontrada: " + lojas[i]);
+                double novoSeguro = Teclado.leDouble("Digite o novo valor do seguro dos eletrônicos: ");
+                ((Informatica)lojas[i]).setSeguroEletronicos(novoSeguro);
+                return true;
+            } else if (lojas[i] instanceof Alimentacao && lojas[i].getNome().equalsIgnoreCase(nomeLoja)) {
+                System.out.println("Loja encontrada: " + lojas[i]);
+                int novoValorLivre = Teclado.leInt("Digite o novo valor da modalidade livre: ");
+                ((Alimentacao)lojas[i]).setPrecoAlmocoLivre(novoValorLivre);
+                return true;
+            } else if (lojas[i] instanceof Vestuario && lojas[i].getNome().equalsIgnoreCase(nomeLoja)) {
+                System.out.println("Loja encontrada: " + lojas[i]);
+                boolean produtosImportadosEditados = ((Vestuario)lojas[i]).perguntarSeVendeImportado();
+                ((Vestuario)lojas[i]).setProdutosImportados(produtosImportadosEditados);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean alteraValorNumeroLoja(String nomeLoja) {
+        for (int i = 0; i < lojas.length; i++) {
+            if (lojas[i] != null && lojas[i].getNome().equalsIgnoreCase(nomeLoja)) {
+                int novoNumero = Teclado.leInt("Novo número da loja: ");
+                if (verificaNumeroLojaValido(novoNumero) && lojas[novoNumero - 1] == null) {
+                    Loja loja = lojas[i];
+                    loja.setNumeroDaLoja(novoNumero);
+                    lojas[i] = null;
+                    lojas[novoNumero - 1] = loja;
+                    System.out.println("Número e posição alterados!");
+                    return true;
+                } else {
+                    System.out.println("Número inválido ou posição já ocupada.");
+                    return false;
+                }
+            }
+        }
+        System.out.println("Loja não encontrada.");
         return false;
     }
 }

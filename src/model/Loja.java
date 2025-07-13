@@ -83,6 +83,8 @@ public class Loja {
         return numeroDaLoja;
     }
 
+    public void setNumeroDaLoja(int numeroDaLoja) {}
+
     @Override
     public String toString() {
     return "Loja: " + nome +

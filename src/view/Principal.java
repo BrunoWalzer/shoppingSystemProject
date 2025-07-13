@@ -68,7 +68,7 @@ public class Principal {
 
     private static void menuGerenciarLojas(Shopping meuShopping) {
         while (true) {
-            System.out.println("\n(1) Criar loja \n(2) Excluir loja \n(3) Editar loja \n(4) Procurar loja por nome \n(5) Imprimir lojas existentes \n(0) Voltar ao menu principal");
+            System.out.println("\n(1) Criar loja \n(2) Excluir loja \n(3) Editar loja existente \n(4) Procurar loja por nome \n(5) Imprimir lojas existentes \n(0) Voltar ao menu principal");
             int opcaoLoja = Teclado.leInt("Digite a opção desejada: ");
 
             switch (opcaoLoja) {
@@ -79,8 +79,7 @@ public class Principal {
                     menuPrincipalExcluirLoja(meuShopping);
                     break;
                 case 3:
-                    System.out.println("\nLojas no shopping:");
-                    meuShopping.imprimeLojas();
+                    editarLoja(meuShopping);
                     break;
                 case 4:
                     meuShopping.procuraLojaPorNome(Teclado.leString("\nDigite o nome da loja que deseja procurar: "));
@@ -95,6 +94,86 @@ public class Principal {
             }
         }
     }
+
+    // Adicione este método na classe Principal
+    private static void editarLoja(Shopping meuShopping) {
+        String nomeLoja = Teclado.leString("Digite o nome da loja que deseja editar: ");
+        Loja loja = null;
+        for (Loja l : meuShopping.getLojas()) {
+            if (l != null && l.getNome().equalsIgnoreCase(nomeLoja)) {
+                loja = l;
+                break;
+            }
+        }
+        if (loja == null) {
+            System.out.println("Loja não encontrada.");
+            return;
+        }
+
+        while (true) {
+            System.out.println("\n(1) Editar nome da loja");
+            System.out.println("(2) Editar data de fundação");
+            System.out.println("(3) Editar número da loja");
+            if (loja instanceof Bijuteria) {
+                System.out.println("(4) Editar meta de vendas");
+            } else if (loja instanceof Cosmetico) {
+                System.out.println("(4) Editar taxa de comercialização");
+            } else if (loja instanceof Informatica) {
+                System.out.println("(4) Editar valor do seguro eletrônico");
+            } else if (loja instanceof Alimentacao) {
+                System.out.println("(4) Editar preço do almoço livre");
+            } else if (loja instanceof Vestuario) {
+                System.out.println("(4) Editar se vende produtos importados");
+            }
+            System.out.println("(0) Voltar");
+
+            int opcao = Teclado.leInt("Digite a opção desejada: ");
+            switch (opcao) {
+                case 1:
+                    loja.setNome(Teclado.leString("Digite o novo nome da loja: "));
+                    System.out.println("Nome alterado!");
+                    break;
+                case 2:
+                    int dia = Teclado.leInt("Novo DIA de fundação: ");
+                    int mes = Teclado.leInt("Novo MÊS de fundação: ");
+                    int ano = Teclado.leInt("Novo ANO de fundação: ");
+                    loja.setDataFundacao(new Data(dia, mes, ano));
+                    System.out.println("Data de fundação alterada!");
+                    break;
+                case 3:
+                    meuShopping.alteraValorNumeroLoja(nomeLoja);
+                    break;
+                case 4:
+                    if (loja instanceof Bijuteria) {
+                        int novaMeta = Teclado.leInt("Nova meta de vendas: ");
+                        ((Bijuteria)loja).setMetaVendas(novaMeta);
+                        System.out.println("Meta de vendas alterada!");
+                    } else if (loja instanceof Cosmetico) {
+                        double novaTaxa = Teclado.leDouble("Nova taxa de comercialização: ");
+                        ((Cosmetico)loja).setTaxaComercializacao(novaTaxa);
+                        System.out.println("Taxa alterada!");
+                    } else if (loja instanceof Informatica) {
+                        double novoSeguro = Teclado.leDouble("Novo valor do seguro: ");
+                        ((Informatica)loja).setSeguroEletronicos(novoSeguro);
+                        System.out.println("Seguro alterado!");
+                    } else if (loja instanceof Alimentacao) {
+                        double novoPreco = Teclado.leDouble("Novo preço do almoço livre: ");
+                        ((Alimentacao)loja).setPrecoAlmocoLivre(novoPreco);
+                        System.out.println("Preço alterado!");
+                    } else if (loja instanceof Vestuario) {
+                        boolean vendeImportado = Vestuario.perguntarSeVendeImportado();
+                        ((Vestuario)loja).setProdutosImportados(vendeImportado);
+                        System.out.println("Informação alterada!");
+                    }
+                    break;
+                case 0:
+                    return;
+                default:
+                    System.out.println("Opção inválida.");
+            }
+        }
+    }
+
 
     private static void menuGadgetsLojas(Shopping meuShopping) {
         while (true) {
@@ -155,7 +234,8 @@ public class Principal {
                             enderecoLojas,
                             numeroDaLoja,
                             dataFundacao,
-                            dataAlvara
+                            dataAlvara,
+                            Teclado.leDouble("Digite o preço do almoço livre: ")
                     );
                     meuShopping.insereLoja(criarLoja);
                     break;
@@ -286,6 +366,26 @@ public class Principal {
             }
 
             break;
+        }
+    }
+
+    public static void alteraDataDeFundacaoDaLoja(Shopping meuShopping) {
+        String nomeLoja = Teclado.leString("Digite o nome da loja que deseja editar: ");
+        Loja lojaParaEditar = null;
+        for (Loja loja : meuShopping.getLojas()) {
+            if (loja != null && loja.getNome().equalsIgnoreCase(nomeLoja)) {
+                lojaParaEditar = loja;
+                break;
+            }
+        }
+        if (lojaParaEditar != null) {
+            int dia = Teclado.leInt("Digite o novo DIA de fundação: ");
+            int mes = Teclado.leInt("Digite o novo MÊS de fundação: ");
+            int ano = Teclado.leInt("Digite o novo ANO de fundação: ");
+            lojaParaEditar.setDataFundacao(new Data(dia, mes, ano));
+            System.out.println("Data de fundação alterada com sucesso!");
+        } else {
+            System.out.println("Loja não encontrada.");
         }
     }
 }
