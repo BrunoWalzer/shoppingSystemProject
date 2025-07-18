@@ -28,6 +28,7 @@ public class Principal {
         }
     }
 
+    // Método para configurar o shopping
     public static Shopping configurarShopping() {
         System.out.println("\nPara a criação de um novo Shopping: " + "\n");
         System.out.println("=-=-=-=-=- Dados do Shopping -=-=-=-=-=");
@@ -48,6 +49,7 @@ public class Principal {
         return new Shopping("Shopping Teste", enderecoShopping, quantLojas);
     }
 
+    // Método para exibir o menu principal
     private static void menuPrincipal(Shopping meuShopping) {
         while (true) {
             System.out.println("\n(1) Gerenciar Lojas \n(2) Gadgets de lojas \n(9) Sair");
@@ -66,6 +68,7 @@ public class Principal {
         }
     }
 
+    // Método para gerenciar lojas
     private static void menuGerenciarLojas(Shopping meuShopping) {
         while (true) {
             System.out.println("\n(1) Criar loja \n(2) Excluir loja \n(3) Editar loja existente \n(4) Procurar loja por nome \n(5) Imprimir lojas existentes \n(0) Voltar ao menu principal");
@@ -95,7 +98,7 @@ public class Principal {
         }
     }
 
-    // Adicione este método na classe Principal
+    // Método para editar loja
     private static void editarLoja(Shopping meuShopping) {
         String nomeLoja = Teclado.leString("Digite o nome da loja que deseja editar: ");
         Loja loja = null;
@@ -174,37 +177,23 @@ public class Principal {
         }
     }
 
-
-    private static void menuGadgetsLojas(Shopping meuShopping) {
-        while (true) {
-            System.out.println("\n(1) Quantidade de lojas por tipo \n(2) Loja de Informática com seguro mais caro \n(3) Loja de Cosméticos com maior taxa de comercialização \n(0) Voltar ao menu principal");
-            int opcaoLoja = Teclado.leInt("Digite a opção desejada: ");
-
-            switch(opcaoLoja) {
-                case 1:
-                    menuGadgetsLojasPorTipo(meuShopping);
-                    break;
-                case 2:
-                    menuGadgetsLojaInformaticaSeguroMaisCaro(meuShopping);
-                    break;
-                case 3:
-                    menuGadgetsLojaCosmeticoTaxaMaisAlta(meuShopping);
-                    break;
-                case 0:
-                    System.out.println("\nVoltando ao menu principal...\n");
-                    return;
-                default:
-                    System.out.println("Opção inválida, tente novamente.");
-            }
-        }
-    }
-
+    // Método para criar loja
     private static void  menuPrincipalCriarLoja(Shopping meuShopping) {
         Loja criarLoja = null;
+
         while (true) {
             System.out.println("\nEscolha o tipo da loja:");
             System.out.println("(1) Alimentação \n(2) Bijuteria \n(3) Cosmético \n(4) Informática \n(5) Vestuário");
             int opcaoTipoDeLoja = Teclado.leInt("Digite a opção: ");
+
+            TipoDeLoja tipo = TipoDeLoja.fromCodigo(opcaoTipoDeLoja);
+
+            if (tipo == null) {
+                System.out.println("Opção inválida. Tente novamente.");
+                continue;
+            }
+
+            System.out.println("Você escolheu: " + tipo);
 
             Data dataFundacao = new Data(
                     Teclado.leInt("Digite o DIA de fundação: "),
@@ -220,8 +209,8 @@ public class Principal {
 
             Endereco enderecoLojas = meuShopping.getEndereco();
 
-            switch (opcaoTipoDeLoja) {
-                case 1:
+            switch (tipo) {
+                case ALIMENTACAO:
                     Data dataAlvara = new Data(
                             Teclado.leInt("Digite o DIA do alvará: "),
                             Teclado.leInt("Digite o MÊS do alvará: "),
@@ -239,7 +228,7 @@ public class Principal {
                     );
                     meuShopping.insereLoja(criarLoja);
                     break;
-                case 2:
+                case BIJUTERIA:
                     criarLoja = new Bijuteria(
                             Teclado.leString("Digite o nome da loja: "),
                             Teclado.leInt("Digite a quantidade de funcionários: "),
@@ -251,7 +240,7 @@ public class Principal {
                     );
                     meuShopping.insereLoja(criarLoja);
                     break;
-                case 3:
+                case COSMETICO:
                     criarLoja = new Cosmetico(
                             Teclado.leString("Digite o nome da loja: "),
                             Teclado.leInt("Digite a quantidade de funcionários: "),
@@ -263,7 +252,7 @@ public class Principal {
                     );
                     meuShopping.insereLoja(criarLoja);
                     break;
-                case 4:
+                case INFORMATICA:
                     criarLoja = new Informatica(
                             Teclado.leString("Digite o nome da loja: "),
                             Teclado.leInt("Digite a quantidade de funcionários: "),
@@ -275,7 +264,7 @@ public class Principal {
                     );
                     meuShopping.insereLoja(criarLoja);
                     break;
-                case 5:
+                case VESTUARIO:
                     boolean vendeVestuarioImportado = Vestuario.perguntarSeVendeImportado();
                     criarLoja = new Vestuario(
                             Teclado.leString("Digite o nome da loja: "),
@@ -304,6 +293,7 @@ public class Principal {
         }
     }
 
+    // Método para excluir loja
     public static void menuPrincipalExcluirLoja(Shopping meuShopping) {
         while (true) {
             String nomeLoja = Teclado.leString("Digite o nome da loja que deseja remover: ");
@@ -316,6 +306,53 @@ public class Principal {
             }
 
             break;
+        }
+    }
+
+    // Método para alterar a data de fundação da loja
+    public static void alteraDataDeFundacaoDaLoja(Shopping meuShopping) {
+        String nomeLoja = Teclado.leString("Digite o nome da loja que deseja editar: ");
+        Loja lojaParaEditar = null;
+        for (Loja loja : meuShopping.getLojas()) {
+            if (loja != null && loja.getNome().equalsIgnoreCase(nomeLoja)) {
+                lojaParaEditar = loja;
+                break;
+            }
+        }
+        if (lojaParaEditar != null) {
+            int dia = Teclado.leInt("Digite o novo DIA de fundação: ");
+            int mes = Teclado.leInt("Digite o novo MÊS de fundação: ");
+            int ano = Teclado.leInt("Digite o novo ANO de fundação: ");
+            lojaParaEditar.setDataFundacao(new Data(dia, mes, ano));
+            System.out.println("Data de fundação alterada com sucesso!");
+        } else {
+            System.out.println("Loja não encontrada.");
+        }
+    }
+
+
+    // Métodos para Gadgets de lojas
+    private static void menuGadgetsLojas(Shopping meuShopping) {
+        while (true) {
+            System.out.println("\n(1) Quantidade de lojas por tipo \n(2) Loja de Informática com seguro mais caro \n(3) Loja de Cosméticos com maior taxa de comercialização \n(0) Voltar ao menu principal");
+            int opcaoLoja = Teclado.leInt("Digite a opção desejada: ");
+
+            switch(opcaoLoja) {
+                case 1:
+                    menuGadgetsLojasPorTipo(meuShopping);
+                    break;
+                case 2:
+                    menuGadgetsLojaInformaticaSeguroMaisCaro(meuShopping);
+                    break;
+                case 3:
+                    menuGadgetsLojaCosmeticoTaxaMaisAlta(meuShopping);
+                    break;
+                case 0:
+                    System.out.println("\nVoltando ao menu principal...\n");
+                    return;
+                default:
+                    System.out.println("Opção inválida, tente novamente.");
+            }
         }
     }
 
@@ -366,26 +403,6 @@ public class Principal {
             }
 
             break;
-        }
-    }
-
-    public static void alteraDataDeFundacaoDaLoja(Shopping meuShopping) {
-        String nomeLoja = Teclado.leString("Digite o nome da loja que deseja editar: ");
-        Loja lojaParaEditar = null;
-        for (Loja loja : meuShopping.getLojas()) {
-            if (loja != null && loja.getNome().equalsIgnoreCase(nomeLoja)) {
-                lojaParaEditar = loja;
-                break;
-            }
-        }
-        if (lojaParaEditar != null) {
-            int dia = Teclado.leInt("Digite o novo DIA de fundação: ");
-            int mes = Teclado.leInt("Digite o novo MÊS de fundação: ");
-            int ano = Teclado.leInt("Digite o novo ANO de fundação: ");
-            lojaParaEditar.setDataFundacao(new Data(dia, mes, ano));
-            System.out.println("Data de fundação alterada com sucesso!");
-        } else {
-            System.out.println("Loja não encontrada.");
         }
     }
 }

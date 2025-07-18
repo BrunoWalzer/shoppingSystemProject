@@ -74,43 +74,43 @@ public class Shopping {
     }
 
     public int quantidadeLojasPorTipo(String tipoProcurado) {
-    int contador = 0;
+        int contador = 0;
 
-    if (tipoProcurado.equalsIgnoreCase("Cosmético")) {
-        for (int i = 0; i < lojas.length; i++) {
-            if (lojas[i] instanceof Cosmetico) {
-                contador++;
+        if (tipoProcurado.equalsIgnoreCase("Cosmético")) {
+            for (int i = 0; i < lojas.length; i++) {
+                if (lojas[i] instanceof Cosmetico) {
+                    contador++;
+                }
             }
-        }
-    } else if (tipoProcurado.equalsIgnoreCase("Vestuário")) {
-        for (int i = 0; i < lojas.length; i++) {
-            if (lojas[i] instanceof Vestuario) {
-                contador++;
+        } else if (tipoProcurado.equalsIgnoreCase("Vestuário")) {
+            for (int i = 0; i < lojas.length; i++) {
+                if (lojas[i] instanceof Vestuario) {
+                    contador++;
+                }
             }
-        }
-    } else if (tipoProcurado.equalsIgnoreCase("Bijuteria")) {
-        for (int i = 0; i < lojas.length; i++) {
-            if (lojas[i] instanceof Bijuteria) {
-                contador++;
+        } else if (tipoProcurado.equalsIgnoreCase("Bijuteria")) {
+            for (int i = 0; i < lojas.length; i++) {
+                if (lojas[i] instanceof Bijuteria) {
+                    contador++;
+                }
             }
-        }
-    } else if (tipoProcurado.equalsIgnoreCase("Alimentação")) {
-        for (int i = 0; i < lojas.length; i++) {
-            if (lojas[i] instanceof Alimentacao) {
-                contador++;
+        } else if (tipoProcurado.equalsIgnoreCase("Alimentação")) {
+            for (int i = 0; i < lojas.length; i++) {
+                if (lojas[i] instanceof Alimentacao) {
+                    contador++;
+                }
             }
-        }
-    } else if (tipoProcurado.equalsIgnoreCase("Informática")) {
-        for (int i = 0; i < lojas.length; i++) {
-            if (lojas[i] instanceof Informatica) {
-                contador++;
+        } else if (tipoProcurado.equalsIgnoreCase("Informática")) {
+            for (int i = 0; i < lojas.length; i++) {
+                if (lojas[i] instanceof Informatica) {
+                    contador++;
+                }
             }
+        } else {
+            return -1; // Tipo inválido
         }
-    } else {
-        return -1; // Tipo inválido
+        return contador;
     }
-    return contador;
-}
 
     public Informatica lojaSeguroMaisCaro() {
         Informatica lojaMaisCara = null;
