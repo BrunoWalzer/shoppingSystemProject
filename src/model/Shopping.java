@@ -73,34 +73,34 @@ public class Shopping {
         }
     }
 
-    public int quantidadeLojasPorTipo(String tipoProcurado) {
+    public int quantidadeLojasPorTipo(TipoDeLoja tipoProcurado) {
         int contador = 0;
 
-        if (tipoProcurado.equalsIgnoreCase("Cosmético")) {
+        if (tipoProcurado == TipoDeLoja.COSMETICO) {
             for (int i = 0; i < lojas.length; i++) {
                 if (lojas[i] instanceof Cosmetico) {
                     contador++;
                 }
             }
-        } else if (tipoProcurado.equalsIgnoreCase("Vestuário")) {
+        } else if (tipoProcurado == TipoDeLoja.VESTUARIO) {
             for (int i = 0; i < lojas.length; i++) {
                 if (lojas[i] instanceof Vestuario) {
                     contador++;
                 }
             }
-        } else if (tipoProcurado.equalsIgnoreCase("Bijuteria")) {
+        } else if (tipoProcurado == TipoDeLoja.BIJUTERIA) {
             for (int i = 0; i < lojas.length; i++) {
                 if (lojas[i] instanceof Bijuteria) {
                     contador++;
                 }
             }
-        } else if (tipoProcurado.equalsIgnoreCase("Alimentação")) {
+        } else if (tipoProcurado == TipoDeLoja.ALIMENTACAO) {
             for (int i = 0; i < lojas.length; i++) {
                 if (lojas[i] instanceof Alimentacao) {
                     contador++;
                 }
             }
-        } else if (tipoProcurado.equalsIgnoreCase("Informática")) {
+        } else if (tipoProcurado == TipoDeLoja.INFORMATICA) {
             for (int i = 0; i < lojas.length; i++) {
                 if (lojas[i] instanceof Informatica) {
                     contador++;
@@ -143,12 +143,17 @@ public class Shopping {
     }
 
     public boolean verificaNumeroLojaValido(int numeroDaLoja) {
-        if(numeroDaLoja > 0 && numeroDaLoja <= this.lojas.length) {
+        if (numeroDaLoja <= 0 || numeroDaLoja > this.lojas.length) {
+            System.out.println("Número da loja inválido: " + numeroDaLoja + " -> *Deve ser entre 1 e " + this.lojas.length + "*");
+            return false;
+        }
+        if (lojas[numeroDaLoja - 1] == null) {
             System.out.println("Loja cadastrada no número: " + numeroDaLoja + "\n");
             return true;
+        } else {
+            System.out.println("Já existe uma loja cadastrada nesse número: " + numeroDaLoja);
+            return false;
         }
-        System.out.println("Número da loja inválido: " + numeroDaLoja + " -> *Deve ser entre 1 e " + this.lojas.length + "*");
-        return false;
     }
 
     public boolean procuraLojaPorNome(String nomeLoja) {

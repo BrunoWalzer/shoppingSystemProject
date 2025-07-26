@@ -357,22 +357,23 @@ public class Principal {
     }
 
     public static void menuGadgetsLojasPorTipo(Shopping meuShopping) {
-        while (true) {
-            System.out.println("\nTipos de loja existentes no Shopping: \nAlimentação \nBijuteria \nCosmético \nInformática \nVestuário \n");
-            String tipoLoja = Teclado.leString("Digite o tipo de loja desejado: ");
-            if(meuShopping.quantidadeLojasPorTipo(tipoLoja) == 0) {
-                System.out.println("Não há lojas do tipo '" + tipoLoja + "' no shopping.");
-            }
-            int contadorTiposLojas = meuShopping.quantidadeLojasPorTipo(tipoLoja);
-            System.out.println("Total de lojas do tipo '" + tipoLoja + "': " + contadorTiposLojas);
-
-            break;
+        System.out.println("\nTipos de loja existentes no Shopping:");
+        for (TipoDeLoja tipo : TipoDeLoja.values()) {
+            System.out.println(tipo.name());
         }
+        int codigo = Teclado.leInt("Digite o código do tipo de loja desejado: ");
+        TipoDeLoja tipoSelecionado = TipoDeLoja.fromCodigo(codigo);
+        if (tipoSelecionado == null) {
+            System.out.println("Tipo inválido.");
+            return;
+        }
+        int contador = meuShopping.quantidadeLojasPorTipo(tipoSelecionado);
+        System.out.println("Total de lojas do tipo '" + tipoSelecionado.name() + "': " + contador);
     }
 
     public static void menuGadgetsLojaInformaticaSeguroMaisCaro(Shopping meuShopping) {
         while (true) {
-            if (meuShopping.quantidadeLojasPorTipo("Informática") == 0) {
+            if (meuShopping.quantidadeLojasPorTipo(TipoDeLoja.INFORMATICA) == 0) {
                 System.out.println("Não há lojas de Informática no shopping.");
             } else {
                 Loja lojaSeguroMaisCaro = meuShopping.lojaSeguroMaisCaro();
@@ -390,7 +391,7 @@ public class Principal {
 
     public static void menuGadgetsLojaCosmeticoTaxaMaisAlta(Shopping meuShopping) {
         while (true) {
-            if(meuShopping.quantidadeLojasPorTipo("Cosmético") == 0) {
+            if(meuShopping.quantidadeLojasPorTipo(TipoDeLoja.COSMETICO) == 0) {
                 System.out.println("Não há lojas de Cosméticos no shopping.");
             } else {
                 Loja lojaTaxaComercializacaoMaisAlta = meuShopping.lojaComTaxaComercializacaoMaisAlta();
